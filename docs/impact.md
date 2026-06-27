@@ -34,16 +34,41 @@ pressure points directly.
 
 ### The Finding
 
-Lloyd-Max quantization places tier boundaries by minimizing mean squared
-distortion over the observed skill distribution. On a Gaussian-shaped
-player population this produces nearly equal tier populations — each of
-ten tiers holds close to 10% of players — while a naive equal-width scheme
-would concentrate most players in the middle tiers and leave the extremes
-sparse.
+The `results_tier.png` shows the result most directly: with 10 tiers fitted by the
+Lloyd-Max algorithm, each tier holds almost exactly 10% of the player
+population. This does not happen automatically. Conservative skill scores
+follow a roughly Gaussian distribution — the majority of players cluster
+near the mean, with thin tails at either extreme. Equal-width tier boundaries
+cut that distribution into intervals of the same size on the skill axis, not
+the same number of players, which means two or three central tiers absorb
+most of the population while the outer tiers sit nearly empty.
 
-Matchmaking quality loss from tier quantization falls sharply up to around
-10 to 15 tiers and then plateaus. Adding tiers past that threshold recovers
-less than 0.1% of matchmaking quality per additional tier.
+Lloyd-Max boundaries move inward toward the dense center of the distribution,
+making middle-tier intervals narrower and outer-tier intervals wider until each
+tier captures the same share of players. The flat bars in the population chart
+are the signature of this compression.
+
+The first two plots show matchmaking quality loss against tier count, both on
+a log scale. The visual impression of a uniformly declining curve is an
+artifact of the log axis. In absolute terms the marginal quality gain per
+additional tier drops sharply past 10 tiers. Moving from 3 to 10 tiers
+recovers roughly 93% of the total possible quality gain. Moving from 10 to
+30 tiers recovers most of the remaining 7%, spread across twenty additional
+tiers. The practical knee is at 10 to 15 tiers — past that, adding tiers
+costs design and engineering complexity without returning meaningful
+matchmaking improvement.
+
+The inflation implication follows from the same logic applied to a moving
+population. At launch, Lloyd-Max boundaries are fitted to the current player
+distribution and tiers are balanced. As a season progresses, casual players
+churn out and the remaining population becomes more experienced — the skill
+distribution shifts upward. Boundaries set at launch now cut the shifted
+distribution at the wrong positions, concentrating players in upper tiers
+not because their skill improved but because the reference point moved.
+This dynamic was not directly simulated in the experiment, but it is a
+direct consequence of using static boundaries on a non-stationary population.
+The input required to re-fit boundaries — the current distribution of
+conservative scores — is always available to the rating server.
 
 ### What This Means for Games
 
