@@ -61,5 +61,10 @@ python -m experiments.matchmaking_experiment
 
 ## References
 
-Herbrich, R., Minka, T., Graepel, T. (2006). TrueSkill: A Bayesian Skill
-Rating System. Advances in Neural Information Processing Systems 20.
+## References
+
+Herbrich, R., Minka, T., Graepel, T. (2006).
+*TrueSkill: A Bayesian Skill Rating System.*
+Advances in Neural Information Processing Systems 20.
+[[Microsoft Research](https://www.microsoft.com/en-us/research/publication/trueskilltm-a-bayesian-skill-rating-system-2/)]
+[[NeurIPS Proceedings](https://proceedings.neurips.cc/paper/2006)]
